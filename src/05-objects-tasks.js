@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 /* ************************************************************************************************
  *                                                                                                *
  * Please read the following tutorial before implementing tasks:                                   *
@@ -5,7 +7,6 @@
  * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object        *
  *                                                                                                *
  ************************************************************************************************ */
-
 
 /**
  * Returns the rectangle object with width and height parameters and getArea() method
@@ -24,7 +25,6 @@ function Rectangle(/* width, height */) {
   throw new Error('Not implemented');
 }
 
-
 /**
  * Returns the JSON representation of specified object
  *
@@ -38,7 +38,6 @@ function Rectangle(/* width, height */) {
 function getJSON(/* obj */) {
   throw new Error('Not implemented');
 }
-
 
 /**
  * Returns the object of specified type from JSON representation
@@ -54,7 +53,6 @@ function getJSON(/* obj */) {
 function fromJSON(/* proto, json */) {
   throw new Error('Not implemented');
 }
-
 
 /**
  * Css selectors builder
@@ -139,7 +137,6 @@ const cssSelectorBuilder = {
     throw new Error('Not implemented');
   },
 };
-
 
 module.exports = {
   Rectangle,
