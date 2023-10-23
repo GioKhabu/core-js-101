@@ -617,8 +617,21 @@ function distinct(arr) {
  *    "Poland" => ["Lodz"]
  *   }
  */
-function group(/* array, keySelector, valueSelector */) {
-  throw new Error('Not implemented');
+function group(array, keySelector, valueSelector) {
+  const combinedObject = {};
+  const newArr = array.map((item) => {
+    if ([keySelector(item)] in combinedObject) {
+      combinedObject[keySelector(item)] = [
+        ...combinedObject[keySelector(item)],
+        valueSelector(item),
+      ];
+    } else {
+      combinedObject[keySelector(item)] = [valueSelector(item)];
+    }
+  });
+  const map1 = new Map(Object.entries(combinedObject));
+
+  return map1;
 }
 
 /**
@@ -634,8 +647,13 @@ function group(/* array, keySelector, valueSelector */) {
  *   [[1, 2], [3, 4], [5, 6]], (x) => x     =>   [ 1, 2, 3, 4, 5, 6 ]
  *   ['one','two','three'], (x) => x.split('')  =>   ['o','n','e','t','w','o','t','h','r','e','e']
  */
-function selectMany(/* arr, childrenSelector */) {
-  throw new Error('Not implemented');
+function selectMany(arr, childrenSelector) {
+  const someResult = [];
+  const newArr = arr.map((item, index) => {
+    const newresults = childrenSelector(item);
+    someResult.push(newresults);
+  });
+  return someResult.flat(Infinity);
 }
 
 /**
@@ -651,13 +669,16 @@ function selectMany(/* arr, childrenSelector */) {
  *   [[[ 1, 2, 3]]], [ 0, 0, 1 ]      => 2        (arr[0][0][1])
  */
 function getElementByIndexes(arr, indexes) {
-  if (indexes.length === 1) {
-    return arr[indexes[0]];
-  } else if (indexes.length === 2) {
-    return arr[indexes[0]][indexes[1]];
-  } else if (indexes.length === 3) {
-    return arr[indexes[0]][indexes[1]][indexes[2]];
-  }
+  let someArr = [...arr];
+  let result;
+  const newArr = indexes.map((item, index, array) => {
+    if (array.length - 1 !== index) {
+      someArr = someArr[item];
+    } else {
+      result = someArr[item];
+    }
+  });
+  return result;
 }
 
 /**
@@ -678,8 +699,20 @@ function getElementByIndexes(arr, indexes) {
  *   [ 1, 2, 3, 4, 5, 6, 7, 8 ]   =>  [ 5, 6, 7, 8, 1, 2, 3, 4 ]
  *
  */
-function swapHeadAndTail(/* arr */) {
-  throw new Error('Not implemented');
+function swapHeadAndTail(arr) {
+  const firstHalf = Math.floor(arr.length / 2);
+  const lastHalf = Math.ceil(arr.length / 2);
+
+  const firstPart = arr.slice(0, firstHalf).sort((a, b) => a - b);
+  const lastPart = arr.slice(lastHalf).sort((a, b) => a - b);
+  const middlePart = arr.slice(firstHalf, firstHalf + 1);
+  if (arr.length === 1) {
+    return arr;
+  } else if (arr.length % 2 !== 0) {
+    return [...lastPart, ...middlePart, ...firstPart];
+  } else {
+    return [...lastPart, ...firstPart];
+  }
 }
 
 module.exports = {
