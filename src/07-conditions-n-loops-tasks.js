@@ -174,8 +174,14 @@ function isInsideCircle(/* circle, point */) {
  *   'abracadabra'  => 'c'
  *   'entente' => null
  */
-function findFirstSingleChar(/* str */) {
-  throw new Error('Not implemented');
+function findFirstSingleChar(str) {
+  for (let i = 0; i < str.length; i++) {
+    let char = str[i];
+    if (str.indexOf(char) == i && str.indexOf(char, i + 1) == -1) {
+      return char;
+    }
+  }
+  return null;
 }
 
 /**
@@ -216,8 +222,9 @@ function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
  * 'rotator' => 'rotator'
  * 'noon' => 'noon'
  */
-function reverseString(/* str */) {
-  throw new Error('Not implemented');
+function reverseString(str) {
+  let reversed = str.split('').reverse().join('');
+  return reversed;
 }
 
 /**
@@ -257,8 +264,22 @@ function reverseInteger(num) {
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
-function isCreditCardNumber(/* ccn */) {
-  throw new Error('Not implemented');
+function isCreditCardNumber(ccn) {
+  const numb = ccn.toString();
+  let even = false;
+  return (
+    numb
+      .split('')
+      .reverse()
+      .map(Number)
+      .reduce(
+        (sum, d) =>
+          (sum += (even = !even) ? d : d < 5 ? d * 2 : (d - 5) * 2 + 1),
+        0
+      ) %
+      10 ===
+    0
+  );
 }
 
 /**
@@ -352,7 +373,9 @@ function toNaryString(/* num, n */) {
  */
 function getCommonDirectoryPath(pathes) {
   let result = [];
-  const splited = pathes.map((item) => item.replaceAll('.', '').split(/\/(\w+)/gi));
+  const splited = pathes.map((item) =>
+    item.replaceAll('.', '').split(/\/(\w+)/gi)
+  );
   const findMatches = splited[0].filter((item2, index) => {
     const someitem = splited.every((item3) => item3[index] === item2);
     switch (someitem) {
