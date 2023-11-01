@@ -108,15 +108,14 @@ function getFastestPromise(array) {
  *
  */
 function chainPromises(array, action) {
-  const promiseResolved = array.reduce(async (acc, current) => {
-    try {
-      current;
-      return action(await acc, await current);
-    } catch (err) {
-      Error(err);
-    }
+  const myFirstPromice = new Promise((resolve, reject) => {
+    const result = [];
+    array.forEach((promise) => {
+      promise.then((value) => result.push(value)).catch((err) => reject(err));
+    });
+    resolve(result);
   });
-  return Promise.resolve(promiseResolved);
+  return myFirstPromice.then((values) => values.reduce(action));
 }
 
 module.exports = {

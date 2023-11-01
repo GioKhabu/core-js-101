@@ -65,8 +65,21 @@ function getPowerFunction(exponent) {
  *   getPolynom(8)     => y = 8
  *   getPolynom()      => null
  */
-function getPolynom() {
-  throw new Error('Not implemented');
+function getPolynom(...args) {
+  return (x)=>{
+    if(args.length === 0) return null
+
+    let y = 0
+
+    for (let i = 0; i < args.length - 1; i ++) {
+      y += args[i] * x ** (args.length - 1 - i);
+    }
+
+    y += args.at(-1);
+
+    return y;
+
+  }
 }
 
 /**
@@ -83,11 +96,11 @@ function getPolynom() {
  *   ...
  *   memoizer() => the same random number  (next run, returns the previous cached result)
  */
-function memoize( func ) {
-  const memoized = func()
-  return function(){
-    return memoized
-  }
+function memoize(func) {
+  const memoized = func();
+  return function () {
+    return memoized;
+  };
 }
 
 /**
@@ -105,8 +118,21 @@ function memoize( func ) {
  * }, 2);
  * retryer() => 2
  */
-function retry(/* func, attempts */) {
-  throw new Error('Not implemented');
+function retry( func, attempts ) {
+  let countOfCalls = attempts;
+
+  const tryToCall = () => {
+    try {
+      countOfCalls -= 1;
+      return func();
+    } catch (error) {
+      if (countOfCalls >= 1) {
+        return tryToCall();
+      }
+      return error;
+    }
+  };
+  return tryToCall;
 }
 
 /**
@@ -132,8 +158,19 @@ function retry(/* func, attempts */) {
  * cos(3.141592653589793) ends
  *
  */
-function logger(/* func, logFunc */) {
-  throw new Error('Not implemented');
+
+function logger(func, logFunc) {
+
+  return (...args) => {
+    const converted = JSON.stringify(args).slice(1, -1);
+
+    logFunc(`${func.name}(${converted}) starts`);
+    const result = func(...args);
+    logFunc(`${func.name}(${converted}) ends`);
+
+    return result;
+  };
+  
 }
 
 /**
@@ -149,18 +186,18 @@ function logger(/* func, logFunc */) {
  *   partialUsingArguments(fn, 'a','b','c')('d') => 'abcd'
  *   partialUsingArguments(fn, 'a','b','c','d')() => 'abcd'
  */
-function partialUsingArguments( fn, ...args1 ) {
-  let first =''
-  args1.forEach(item=>{
-    first += item
-  })
-  return function(...args2){
-    let second = ''
+function partialUsingArguments(fn, ...args1) {
+  let first = '';
+  args1.forEach((item) => {
+    first += item;
+  });
+  return function (...args2) {
+    let second = '';
     args2.forEach((item) => {
       second += item;
     });
-    return first+second
-  }
+    return first + second;
+  };
 }
 
 /**
@@ -180,12 +217,12 @@ function partialUsingArguments( fn, ...args1 ) {
  *   getId4() => 7
  *   getId10() => 11
  */
-function getIdGeneratorFunction( startFrom ) {
-  let number = startFrom
-  return function(){
-    const numb1 = number++
-    return numb1
-  }
+function getIdGeneratorFunction(startFrom) {
+  let number = startFrom;
+  return function () {
+    const numb1 = number++;
+    return numb1;
+  };
 }
 
 module.exports = {
