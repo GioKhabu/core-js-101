@@ -214,8 +214,12 @@ function findFirstSingleChar(str) {
  *   5, 3, true, true   => '[3, 5]'
  *
  */
-function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
-  throw new Error('Not implemented');
+function getIntervalString( a, b, isStartIncluded, isEndIncluded ) {
+  const startBracket = isStartIncluded ? '[' : '(';
+  const endBracket = isEndIncluded ? ']' : ')';
+  const smallerNumber = Math.min(a, b);
+  const largerNumber = Math.max(a, b);
+  return `${startBracket}${smallerNumber}, ${largerNumber}${endBracket}`;
 }
 
 /**
@@ -394,8 +398,17 @@ for (let i = 0; i < str.length; i += 1) {
  *    365, 4  => '11231'
  *    365, 10 => '365'
  */
-function toNaryString(/* num, n */) {
-  throw new Error('Not implemented');
+function toNaryString( num, n ) {
+  let numCopy = num;
+  let naryString = '';
+
+  while (numCopy > 0) {
+    const remainder = numCopy % n;
+    naryString += remainder.toString();
+    numCopy = Math.floor(numCopy / n);
+  }
+
+  return naryString.split('').reverse().join('');
 }
 
 /**
@@ -456,8 +469,28 @@ function getCommonDirectoryPath(pathes) {
  *                         [ 6 ]]
  *
  */
-function getMatrixProduct(/* m1, m2 */) {
-  throw new Error('Not implemented');
+function getMatrixProduct( m1, m2 ) {
+  const rows1 = m1.length;
+  const cols1 = m1[0].length;
+  const cols2 = m2[0].length;
+
+  const result = new Array(rows1);
+
+  for (let i = 0; i < rows1; i += 1) {
+    result[i] = new Array(cols2);
+
+    for (let j = 0; j < cols2; j += 1) {
+      let sum = 0;
+
+      for (let k = 0; k < cols1; k += 1) {
+        sum += m1[i][k] * m2[k][j];
+      }
+
+      result[i][j] = sum;
+    }
+  }
+
+  return result;
 }
 
 /**
@@ -490,8 +523,46 @@ function getMatrixProduct(/* m1, m2 */) {
  *    [    ,   ,    ]]
  *
  */
-function evaluateTicTacToePosition(/* position */) {
-  throw new Error('Not implemented');
+function evaluateTicTacToePosition( position ) {
+  for (let i = 0; i < 3; i += 1) {
+    if (
+      position[i][0] &&
+      position[i][0] === position[i][1] &&
+      position[i][1] === position[i][2]
+    ) {
+      return position[i][0];
+    }
+  }
+
+  // Check columns
+  for (let j = 0; j < 3; j += 1) {
+    if (
+      position[0][j] &&
+      position[0][j] === position[1][j] &&
+      position[1][j] === position[2][j]
+    ) {
+      return position[0][j];
+    }
+  }
+
+  // Check diagonals
+  if (
+    position[0][0] &&
+    position[0][0] === position[1][1] &&
+    position[1][1] === position[2][2]
+  ) {
+    return position[0][0];
+  }
+
+  if (
+    position[0][2] &&
+    position[0][2] === position[1][1] &&
+    position[1][1] === position[2][0]
+  ) {
+    return position[0][2];
+  }
+
+  return undefined;
 }
 
 module.exports = {
